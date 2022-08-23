@@ -1,0 +1,191 @@
+<?php
+
+namespace App\Http\Controllers\Admin\Market;
+
+use App\Models\User;
+use App\Models\Admin\Market\Copan;
+use App\Http\Controllers\Controller;
+use App\Models\Admin\Market\Product;
+use App\Models\Admin\Market\AmazingSale;
+use App\Models\Admin\Market\CommonDiscount;
+use App\Http\Requests\Admin\Market\StoreAmazingSaleRequest;
+use App\Http\Requests\Admin\Market\UpdateAmazingSaleRequest;
+use App\Http\Requests\Admin\Market\StoreCommonDisCountRequest;
+use App\Http\Requests\Admin\Market\StoreCopanRequest;
+use App\Http\Requests\Admin\Market\UpdateCommonDisCountRequest;
+use App\Http\Requests\Admin\Market\UpdateCopanRequest;
+
+class DiscountController extends Controller
+{
+    public function copen()
+    {
+        $copans = Copan::all();
+        return view('admin.market.discount.copan',compact('copans'));
+    }
+
+
+    public function copanCreate()
+    {
+        $users = User::all();
+        return view('admin.market.discount.copan-create',compact('users'));
+    }
+
+
+    public function copanStore(StoreCopanRequest $request)
+    {
+
+        $inputs = $request->all();
+        //date fixed
+        $realTimestampStart = substr($request->start_date, 0, 10);
+        $inputs['start_date'] = date("Y-m-d H:i:s", (int)$realTimestampStart);
+        $realTimestampEnd = substr($request->end_date, 0, 10);
+        $inputs['end_date'] = date("Y-m-d H:i:s", (int)$realTimestampEnd);
+
+        if($inputs['type'] == 0 )
+        {
+           $inputs['user_id'] = null;
+        }
+        $copan = Copan::create($inputs);
+        return redirect()->route('admin.market.discount.copan')->with('swal-success', ' کد تخفیف جدید شما با موفقیت ثبت شد');
+
+
+    }
+
+
+    public function copanEdit(Copan $copan)
+    {
+
+        $users = User::all();
+        return view('admin.market.discount.copan-edit',compact('copan','users'));
+    }
+
+    public function copanUpdate(UpdateCopanRequest $request , Copan $copan)
+    {
+
+        $inputs = $request->all();
+         //date fixed
+         $realTimestampStart = substr($request->start_date, 0, 10);
+         $inputs['start_date'] = date("Y-m-d H:i:s", (int)$realTimestampStart);
+         $realTimestampEnd = substr($request->end_date, 0, 10);
+         $inputs['end_date'] = date("Y-m-d H:i:s", (int)$realTimestampEnd);
+
+         if($inputs['type'] == 0 )
+         {
+            $inputs['user_id'] = null;
+         }
+            $copan->update($inputs);
+            return redirect()->route('admin.market.discount.copan')->with('swal-success', 'کد تخفیف  شما با موفقیت ویرایش شد');
+    }
+
+    public function copanDestroy(Copan $copan)
+    {
+        $result = $copan->delete();
+        return redirect()->route('admin.market.discount.copan')->with('swal-success', ' تخفیف  شما با موفقیت حذف شد');
+    }
+
+
+
+
+    public function commonDiscount()
+    {
+        $commonDiscounts = CommonDiscount::all();
+        return view('admin.market.discount.common',compact('commonDiscounts'));
+    }
+
+    public function commonDiscountCreate()
+    {
+        return view('admin.market.discount.common-create');
+    }
+
+    public function commonDiscountStore(StoreCommonDisCountRequest $request)
+    {
+       $inputs = $request->all();
+         //date fixed
+         $realTimestampStart = substr($request->start_date, 0, 10);
+         $inputs['start_date'] = date("Y-m-d H:i:s", (int)$realTimestampStart);
+         $realTimestampEnd = substr($request->end_date, 0, 10);
+         $inputs['end_date'] = date("Y-m-d H:i:s", (int)$realTimestampEnd);
+
+         $commonDiscounts = CommonDiscount::create($inputs);
+         return redirect()->route('admin.market.discount.commonDiscount')->with('swal-success', 'کد تخفیف جدید شما با موفقیت ثبت شد');
+    }
+
+    public function commonDiscountEdit(CommonDiscount $commonDiscount)
+    {
+
+         return view('admin.market.discount.common-edit',compact('commonDiscount'));
+    }
+
+    public function commonDiscountUpdate(CommonDiscount $commonDiscount , UpdateCommonDisCountRequest $request)
+    {
+
+         $inputs = $request->all();
+            //date fixed
+            $realTimestampStart = substr($request->start_date, 0, 10);
+            $inputs['start_date'] = date("Y-m-d H:i:s", (int)$realTimestampStart);
+            $realTimestampEnd = substr($request->end_date, 0, 10);
+            $inputs['end_date'] = date("Y-m-d H:i:s", (int)$realTimestampEnd);
+            $commonDiscount->update($inputs);
+            return redirect()->route('admin.market.discount.commonDiscount')->with('swal-success', 'کد تخفیف جدید شما با موفقیت ویرایش شد');
+    }
+     public function commonDiscountDestroy(CommonDiscount $commonDiscount )
+    {
+        $commonDiscount->delete();
+        return redirect()->back()->with('swal-success', 'کد تخفیف  شما با موفقیت حذف شد');
+    }
+
+    public function amazingSale()
+    {
+        $amazingSales = AmazingSale::all();
+        return view('admin.market.discount.amazing',compact('amazingSales'));
+    }
+
+    public function amazingSaleCreate()
+    {
+
+        $products = Product::all();
+        return view('admin.market.discount.amazing-create',compact('products'));
+    }
+
+    public function amazingSaleStore(StoreAmazingSaleRequest $request, AmazingSale $amazingSale)
+    {
+
+        $inputs = $request->all();
+         //date fixed
+         $realTimestampStart = substr($request->start_date, 0, 10);
+         $inputs['start_date'] = date("Y-m-d H:i:s", (int)$realTimestampStart);
+         $realTimestampEnd = substr($request->end_date, 0, 10);
+         $inputs['end_date'] = date("Y-m-d H:i:s", (int)$realTimestampEnd);
+         $amazingSale = AmazingSale::create($inputs);
+         return redirect()->route('admin.market.discount.amazingSale')->with('swal-success', ' تخفیف جدید شما با موفقیت ثبت شد');
+
+    }
+
+    public function amazingSaleEdit( AmazingSale $amazingSale)
+    {
+        $products = Product::all();
+        return view('admin.market.discount.amazing-edit',compact('products', 'amazingSale'));
+    }
+
+    public function amazingSaleUpdate(UpdateAmazingSaleRequest $request, AmazingSale $amazingSale)
+    {
+
+        $inputs = $request->all();
+         //date fixed
+         $realTimestampStart = substr($request->start_date, 0, 10);
+         $inputs['start_date'] = date("Y-m-d H:i:s", (int)$realTimestampStart);
+         $realTimestampEnd = substr($request->end_date, 0, 10);
+         $inputs['end_date'] = date("Y-m-d H:i:s", (int)$realTimestampEnd);
+         $amazingSale -> update($inputs);
+         return redirect()->route('admin.market.discount.amazingSale')->with('swal-success', ' تخفیف جدید شما با موفقیت ثبت شد');
+
+    }
+
+    public function amazingSaleDestroy(AmazingSale $amazingSale )
+    {
+        $amazingSale->delete();
+        return redirect()->back()->with('swal-success', 'کد تخفیف  شما با موفقیت حذف شد');
+    }
+
+
+}
