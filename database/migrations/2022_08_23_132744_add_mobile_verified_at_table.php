@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOTPSTable extends Migration
+class AddMobileVerifiedAtTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateOTPSTable extends Migration
      */
     public function up()
     {
-        Schema::create('o_t_p_s', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->timestamp('mobile_verified_at')->nullable()->after('email_verified_at');
         });
     }
 
@@ -26,6 +25,8 @@ class CreateOTPSTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('o_t_p_s');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 }
