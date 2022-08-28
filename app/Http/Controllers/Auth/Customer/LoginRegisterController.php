@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth\Customer;
 
- 
+
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -19,6 +19,10 @@ class LoginRegisterController extends Controller
     {
         return view('customer.auth.login-register');
     }
+
+
+
+    
 
     public function loginRegister(LoginRegisterRequest $request)
     {
@@ -45,7 +49,7 @@ class LoginRegisterController extends Controller
             $inputs['id'] = str_replace('+98', '', $inputs['id']);
 
             $user = User::where('mobile', $inputs['id'])->first();
-            
+
             if(empty($user)){
                 $newUser['mobile'] = $inputs['id'];
             }
@@ -55,7 +59,7 @@ class LoginRegisterController extends Controller
             $errorText = 'شناسه ورودی شما نه شماره موبایل است نه ایمیل';
             return redirect()->route('auth.customer.login-register-form')->withErrors(['id' => $errorText]);
         }
-        
+
         if(empty($user)){
             $newUser['password'] = '98355154';
             $newUser['activation'] = 1;
@@ -82,7 +86,7 @@ class LoginRegisterController extends Controller
             $smsService = new SmsService();
             $smsService->setFrom(Config::get('sms.otp_from'));
             $smsService->setTo(['0' . $user->mobile]);
-            $smsService->setText(" مجموعه انگیزشی دکتر ناصر خالدی \n  کد تایید : $otpCode");
+            $smsService->setText(" آکادمی خانواده موفق  \n  کد تایید : $otpCode");
             $smsService->setIsFlash(true);
 
             $messagesService = new MessageSerivce($smsService);
