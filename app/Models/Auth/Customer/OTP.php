@@ -2,8 +2,9 @@
 
 namespace App\Models\Auth\Customer;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OTP extends Model
 {
@@ -12,4 +13,11 @@ class OTP extends Model
 
     protected $guarded = ['id'];
     protected $table = 'otps';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
 }
