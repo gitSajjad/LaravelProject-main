@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\Auth\Customer\OTP;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
-use App\Http\Services\Message\MessageSerivce;
+use App\Http\Services\Message\MessageService;
 use App\Http\Services\Message\SMS\SmsService;
+use App\Http\Services\Message\Email\EmailService;
 use App\Http\Requests\Auth\Customer\LoginRegisterRequest;
 
 class LoginRegisterController extends Controller
@@ -22,7 +23,7 @@ class LoginRegisterController extends Controller
 
 
 
-    
+
 
     public function loginRegister(LoginRegisterRequest $request)
     {
@@ -89,15 +90,28 @@ class LoginRegisterController extends Controller
             $smsService->setText(" آکادمی خانواده موفق  \n  کد تایید : $otpCode");
             $smsService->setIsFlash(true);
 
-            $messagesService = new MessageSerivce($smsService);
+            $messagesService = new MessageService($smsService);
 
         }
 
-        // elseif($type === 1){
+        elseif($type === 1){
 
-        // }
+
+            $emailService = new EmailService();
+            $details = [
+                'title' => 'ایمیل فعال سازی',
+                'body' => "کد فعال سازی شما : $otpCode"
+            ];
+            $emailService->setDetails($details);
+            $emailService->setFrom('noreply@example.com', 'example');
+            $emailService->setSubject('کد احراز هویت');
+            $emailService->setTo($inputs['id']);
+
+            $messagesService = new MessageService($emailService);
+        }
 
         $messagesService->send();
+
 
 
 
