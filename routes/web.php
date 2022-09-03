@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Customer\HomeCustomer;
 use App\Http\Controllers\Admin\User\RoleController;
 use App\Http\Controllers\Admin\AdminPanelController;
+use App\Http\Controllers\Admin\Content\BannerController;
 use App\Http\Controllers\Admin\notify\SMSController;
 use App\Http\Controllers\Admin\Content\FAQController;
 use App\Http\Controllers\Admin\Market\StorController;
@@ -240,9 +241,15 @@ Route::prefix('admin')->group(function(){
 
 
 
-               //***************** POST *********************
+               //*********** Post ****************/
+
                Route::resource('post' ,PostController::class);
                Route::get('post/changeStatus/{post}',[PostController::class, 'changeStatus'])->name('post.changeStatus');
+
+               //********* Banner ****************/
+
+                 Route::resource('Banner' ,BannerController::class);
+                 Route::get('Banner/changeStatus/{banner}',[BannerController::class, 'changeStatus'])->name('Banner.changeStatus');
 
     });
 
@@ -392,7 +399,7 @@ Route::namespace('Auth')->group(function(){
     Route::get('login-confirm/{token}', [LoginRegisterController::class, 'loginConfirmForm'])->name('auth.customer.login-confirm-form');
     Route::middleware('throttle:customer-login-confirm-limiter')->post('/login-confirm/{token}', [LoginRegisterController::class, 'loginConfirm'])->name('auth.customer.login-confirm');
     Route::middleware('throttle:customer-login-resend-otp-limiter')->get('/login-resend-otp/{token}', [LoginRegisterController::class, 'loginResendOtp'])->name('auth.customer.login-resend-otp');
-    Route::get('/logout', [LoginRegisterController::class, 'logout'])->name('auth.customer.logout');    
+    Route::get('/logout', [LoginRegisterController::class, 'logout'])->name('auth.customer.logout');
 });
 
 Route::get('/home', function ()

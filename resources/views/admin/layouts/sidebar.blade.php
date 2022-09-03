@@ -68,6 +68,11 @@
                 </section>
             </section>
 
+            <a href="{{ route('Banner.index') }}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span> بنر ها</span>
+            </a>
+
             <a href="{{ route('deliver.index') }}" class="sidebar-link">
                 <i class="fas fa-bars"></i>
                 <span>روش های ارسال</span>

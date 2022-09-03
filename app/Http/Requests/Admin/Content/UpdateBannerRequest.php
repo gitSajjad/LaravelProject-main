@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Market;
+namespace App\Http\Requests\Admin\Content;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateBrandRequest extends FormRequest
+class UpdateBannerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +23,7 @@ class UpdateBrandRequest extends FormRequest
      */
     public function rules()
     {
+        
         return [
             'title' => 'required|max:120|min:2|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي., ]+$/u',
             'url' => 'required|max:500|min:5|regex:/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-z-A-Z-0-9]\.[a-zA-Z]{2,}$/u',
@@ -30,5 +31,6 @@ class UpdateBrandRequest extends FormRequest
             'position' => 'required|numeric',
             'image' => 'image|mimes:png,jpg,jpeg,gif',
         ];
+
     }
 }
