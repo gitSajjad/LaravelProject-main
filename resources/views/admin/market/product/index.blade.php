@@ -63,6 +63,7 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <a href="{{route('product.gallery.index', $product->id)}}" class="dropdown-item text-right"><i class="fa fa-images"></i> گالری</a>
                                         <a href="{{ route('product.color.index', $product->id) }}" class="dropdown-item text-right"><i class="fa fa-list-ul"></i> رنگ کالا</a>
+                                        <a href="{{ route('product.guarantee.index', $product->id) }}" class="dropdown-item text-right"><i class="fa fa-shield-alt"></i> گارانتی</a>
                                         <a href="{{ route('product.edit',$product->id) }}" class="dropdown-item text-right"><i class="fa fa-edit"></i> ویرایش</a>
                                         <form class="d-inline" action="{{ route('product.destroy',$product->id) }}" method="post">
                                             @csrf

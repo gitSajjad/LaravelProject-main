@@ -64,4 +64,11 @@ class Product extends Model
         return $this->hasMany(PropertyValue::class);
     }
 
+
+    public function guarantees()
+    {
+        return $this->hasMany(Guarantee::class);
+    }
+    
+
 }

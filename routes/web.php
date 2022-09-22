@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Customer\HomeCustomer;
 use App\Http\Controllers\Admin\User\RoleController;
 use App\Http\Controllers\Admin\AdminPanelController;
-use App\Http\Controllers\Admin\Content\BannerController;
 use App\Http\Controllers\Admin\notify\SMSController;
 use App\Http\Controllers\Admin\Content\FAQController;
 use App\Http\Controllers\Admin\Market\StorController;
@@ -18,11 +17,11 @@ use App\Http\Controllers\Admin\Market\OrderController;
 use App\Http\Controllers\Admin\notify\EmailController;
 use App\Http\Controllers\Admin\ticket\TicketController;
 use App\Http\Controllers\Admin\User\CustomerController;
+use App\Http\Controllers\Admin\Content\BannerController;
 use App\Http\Controllers\Admin\Market\CommentController;
 use App\Http\Controllers\Admin\Market\DeliverController;
 use App\Http\Controllers\Admin\Market\GalleryController;
 use App\Http\Controllers\Admin\Market\PaymentController;
-use App\Http\Controllers\Admin\Market\PeymentController;
 use App\Http\Controllers\Admin\Market\ProductController;
 use App\Http\Controllers\Admin\User\AdminUserController;
 use App\Http\Controllers\Admin\Market\CategoryController;
@@ -31,6 +30,7 @@ use App\Http\Controllers\Admin\Market\PropertyController;
 use App\Http\Controllers\Admin\setting\SettingController;
 use App\Http\Controllers\Admin\Ticket\PriorityController;
 use App\Http\Controllers\Admin\User\PermissionController;
+use App\Http\Controllers\Admin\Market\GuaranteeController;
 use App\Http\Controllers\Admin\Notify\EmailFileController;
 use App\Http\Controllers\Admin\Ticket\AdminTicketController;
 use App\Http\Controllers\Admin\Market\ProductColorController;
@@ -39,6 +39,9 @@ use App\Http\Controllers\Admin\Ticket\CategoryTicketController;
 use App\Http\Controllers\Auth\Customer\LoginRegisterController;
 use App\Http\Controllers\Admin\Content\CommentController as CommentCommentController;
 use App\Http\Controllers\Admin\Content\CategoryController as ContentCategoryController;
+use App\Http\Controllers\Customer\Market\ProductController as MarketProductController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +106,14 @@ Route::prefix('admin')->group(function(){
             Route::delete('/gallery/destroy/{product}/{gallery}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
 
+            //guarantee
+
+            Route::get('/guarantee/{product}', [GuaranteeController::class, 'index'])->name('guarantee.index');
+            Route::get('/guarantee/create/{product}', [GuaranteeController::class, 'create'])->name('guarantee.create');
+            Route::post('/guarantee/store/{product}', [GuaranteeController::class, 'store'])->name('guarantee.store');
+            Route::delete('/guarantee/destroy/{product}/{guarantee}', [GuaranteeController::class, 'destroy'])->name('guarantee.destroy');
+
+
          });
 
         //***************** Comment *********************
@@ -114,6 +125,7 @@ Route::prefix('admin')->group(function(){
          Route::get('deliver/changeStatus/{delivery}',[DeliverController::class, 'changeStatus'])->name('deliver.changeStatus');
 
          //***************** Property *********************
+
          Route::prefix('property')->name('property.')->group(function () {
             Route::get('/', [PropertyController::class, 'index'])->name('index');
             Route::get('/create', [PropertyController::class, 'create'])->name('create');
@@ -392,6 +404,9 @@ Route::prefix('admin')->group(function(){
 });
 
 
+
+//********AUTH*******/
+
 Route::namespace('Auth')->group(function(){
 
     Route::get('login-register', [LoginRegisterController::class, 'loginRegisterForm'])->name('auth.customer.login-register-form');
@@ -402,9 +417,21 @@ Route::namespace('Auth')->group(function(){
     Route::get('/logout', [LoginRegisterController::class, 'logout'])->name('auth.customer.logout');
 });
 
-Route::get('/home', function ()
-{return view('customer.home');
-})->name('customer.home');
+
+
+///********HOMEEEE****************/
+
+
+Route::get('/home',[HomeCustomer::class, 'home'])->name('customer.home');
+
+Route::namespace('Market')->group(function () {
+
+    Route::get('/product/{product:slug}', [MarketProductController::class, 'product'])->name('customer.market.product');
+    Route::post('/add-comment/product/{product:slug}', [MarketProductController::class, 'addComment'])->name('customer.market.add-comment');
+
+});
+
+
 
 
 

@@ -53,16 +53,16 @@
                             <td>{{ $banner->title }}</td>
                             <td>{{ $banner->url }}</td>
                             <td>
-                                <img src="{{ asset($banner->image['indexArray'][$banner->image['currentImage']] ) }}" alt="" width="100" height="50">
+                                <img src="{{ asset($banner->image) }}" alt="" width="100" height="50">
                             </td>
 
                             <td>
 
                                 @if ($banner->status == 0)
 
-                                <span class="text-success">enable</span>
-                                @else
                                 <span class="text-danger">disable</span>
+                                @else
+                                <span class="text-success">enable</span>
                                 @endif
 
 

@@ -144,7 +144,6 @@ class categoryController extends Controller
     public function changeStatus(PostCategory $postCategory)
     {
 
-
         $status =($postCategory->status == '0') ? '1' : '0';
         $postCategory->update(['status'=>$status]);
         return redirect()->route('category.index')->with('swal-success',' با موفقیت انجام شد');

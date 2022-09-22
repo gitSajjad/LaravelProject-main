@@ -46,18 +46,15 @@ class BannerController extends Controller
     {
 
         $inputs = $request->all();
-        if($request->hasFile('image'))
-        {
+
+        if ($request->hasFile('image')) {
             $ImageUploadService->setExclusiveDirectory('images' . DIRECTORY_SEPARATOR . 'banner');
-
-            $result = $ImageUploadService->createIndexAndSave($request->file('image'));
+            $result = $ImageUploadService->save($request->file('image'));
+            if ($result === false) {
+                return redirect()->route(' banner.index')->with('swal-error', 'آپلود تصویر با خطا مواجه شد');
+            }
+            $inputs['image'] = $result;
         }
-        if($result === false)
-        {
-            return redirect()->route('Banner.index')->with('swal-error', 'آپلود تصویر با خطا مواجه شد');
-        }
-        $inputs['image'] = $result;
-
 
         $banner = Banner::create($inputs);
 
@@ -103,10 +100,10 @@ class BannerController extends Controller
         {
             if(!empty($Banner->image))
             {
-                $ImageUploadService->deleteDirectoryAndFiles($Banner->image['directory']);
+                $ImageUploadService->deleteImage($Banner->image);
             }
-            $ImageUploadService->setExclusiveDirectory('images' . DIRECTORY_SEPARATOR . 'post-category');
-            $result = $ImageUploadService->createIndexAndSave($request->file('image'));
+            $ImageUploadService->setExclusiveDirectory('images' . DIRECTORY_SEPARATOR . 'banner');
+            $result = $ImageUploadService->save($request->file('image'));
             if($result === false)
             {
                 return redirect()->route('admin.content.category.index')->with('swal-error', 'آپلود تصویر با خطا مواجه شد');
@@ -143,8 +140,6 @@ class BannerController extends Controller
 
     public function changeStatus(Banner $banner)
     {
-
-
         $status =($banner->status == '0') ? '1' : '0';
         $banner->update(['status'=>$status]);
         return redirect()->route('Banner.index')->with('swal-success',' با موفقیت انجام شد');
