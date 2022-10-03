@@ -180,6 +180,7 @@
                             <h2 class="content-header-title">
                                 <span>کالاهای مرتبط</span>
                             </h2>
+                        
                             <section class="content-header-link">
                                 <!--<a href="#">مشاهده همه</a>-->
                             </section>
@@ -213,7 +214,7 @@
                                     </section>
                                 </section>
                             </section>
-                           
+
 
                         </section>
                     </section>
