@@ -41,6 +41,7 @@ class BrandController extends Controller
      */
     public function store(StoreBrandRequest $request ,ImageUploadService $ImageUploadService)
     {
+    
 
         $inputs = $request->all();
         if($request->hasFile('logo'))
@@ -56,7 +57,6 @@ class BrandController extends Controller
 
 
         $brand = Brand::create($inputs);
-
         return redirect()->route('brand.index')->with('swal-success', 'برند جدید شما با موفقیت ثبت شد');
     }
 
